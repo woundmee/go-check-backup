@@ -50,32 +50,25 @@ func checkDB(path string) string {
 	}
 
 	fmt.Println(string(jsonData))
-
 	return string(jsonData)
 
 }
 
 func checkDBRelevance(path string, backupType string) int8 {
-
 	files, err := os.ReadDir(path)
 	if err != nil {
 		log.Println("Error! ", err)
 	}
 
 	for _, file := range files {
-
-		//Pyramid2_backup_Day_2025_01_01.bak
 		if strings.Split(file.Name(), "_")[0] == "Pyramid2" && strings.Split(file.Name(), "_")[1] == "backup" {
-
 			fileInfo, err := file.Info()
-
 			if err != nil {
 				log.Println("Error! ", err)
 			}
 
 			modFileDate := fileInfo.ModTime().Local().Format("2006-01-02")
 			currentDate := time.Now().Local().Format("2006-01-02")
-
 			now := time.Now()
 
 			currentMonthFirstDay := time.Date(now.Year(), now.Month(), 1, 0, 0, 0, 0, now.Location()).Format("2006-01-02")
@@ -106,9 +99,7 @@ func checkDBRelevance(path string, backupType string) int8 {
 // =========================== //
 
 func checkOS(path, saveToFile string) {
-
 	content := checkOSRelevnce(path, saveToFile)
-
 	backupData := osBackupData{
 		WeekNameBackupOS:     strings.Split(content, ":")[0],
 		AvailabilityBackupOS: strings.Split(content, ":")[1],
@@ -131,9 +122,7 @@ func checkOSRelevnce(path string, dstFile string) string {
 		}
 
 		for _, file := range files {
-
 			currentDate := time.Now().Format("2006-01-02")
-
 			backupFileExist := strings.Contains(file.Name(), fmt.Sprintf("System Backup%s", currentDate))
 			if backupFileExist {
 				// если есть файл бэкапа в день бэкапа
@@ -176,11 +165,9 @@ func readFromFile(filename string) string {
 	defer openFile.Close()
 
 	reader := bufio.NewReader(openFile)
-
 	stat, _ := openFile.Stat()
-
 	buf := make([]byte, stat.Size())
-
 	reader.Read(buf)
+
 	return string(buf)
 }
